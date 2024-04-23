@@ -1,0 +1,79 @@
+
+	
+	import { MyLogLevel,MyTrackerZone,ConfigOptions,initP2p,p2pUrl } from "@/uni_modules/xtf-swarmcloud";
+	export default {
+		onReady() {
+		      this.videoContext = uni.createVideoContext('video', this);
+		    },
+		data() {
+			return {
+				videoContext: null as VideoContext | null,
+				header: {
+				          'User-Agent': 'User-Agent test',
+				          'header': 'header test',
+				          'cookie': 'cookie test'
+				        } as UTSJSONObject,
+				// 属性
+				src:"",
+				oldsrc: "https://s5.bfengbf.com/video/17haoyinlecangkudierji/20240216/index.m3u8",
+				
+			}
+		},
+		onLoad() {
+
+		},
+		onShow() {
+			
+		},
+		methods: {
+			initCdnbye: function () {
+				console.log(typeof(MyLogLevel.DEBUG));
+				let options = {
+				   logEnabled: true,
+				   logLevel: MyLogLevel.DEBUG as number,
+				   trackerZone:MyTrackerZone.Europe as number
+				 } as ConfigOptions;
+				 initP2p("4-iRPC_GR",options);
+			},
+			
+			startPlay(){
+				this.src=p2pUrl(this.oldsrc);
+				console.log(this.src);
+				this.videoContext?.play();
+				
+			},
+			stop(){
+				this.videoContext?.stop();
+			},
+			
+			onError: function (res : UniVideoErrorEvent) {
+			        console.log(res.type + " -> " + JSON.stringify(res.detail));
+			       
+			},
+
+		}
+	}
+
+
+function GenPagesIndexIndexRender(): any | null {
+const _ctx = this
+const _cache = this.$.renderCache
+  return createElementVNode("view", utsMapOf({ class: "content" }), [
+    createElementVNode("video", utsMapOf({
+      class: "video",
+      ref: "video",
+      id: "video",
+      header: _ctx.header,
+      src: _ctx.src,
+      onError: _ctx.onError,
+      controls: true
+    }), null, 40, ["header", "src", "onError"]),
+    createElementVNode("button", utsMapOf({
+      type: "primary",
+      onClick: _ctx.initCdnbye
+    }), "初始化cdnbye", 8, ["onClick"]),
+    createElementVNode("button", utsMapOf({ onClick: _ctx.startPlay }), "播放", 8, ["onClick"]),
+    createElementVNode("button", utsMapOf({ onClick: _ctx.stop }), "停止", 8, ["onClick"])
+  ])
+}
+const GenPagesIndexIndexStyles = [utsMapOf([["content", padStyleMapOf(utsMapOf([["display", "flex"], ["alignItems", "center"], ["justifyContent", "center"]]))], ["logo", padStyleMapOf(utsMapOf([["height", "200rpx"], ["width", "200rpx"], ["marginTop", "200rpx"], ["marginBottom", "50rpx"]]))], ["title", padStyleMapOf(utsMapOf([["fontSize", "36rpx"], ["color", "#8f8f94"]]))]])]

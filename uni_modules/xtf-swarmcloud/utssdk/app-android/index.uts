@@ -1,0 +1,198 @@
+import P2pConfig from 'com.p2pengine.core.p2p.P2pConfig';
+import P2pEngine from 'com.p2pengine.sdk.P2pEngine';
+import TrackerZone from 'com.p2pengine.core.tracking.TrackerZone';
+import LogLevel from 'com.p2pengine.core.utils.LogLevel';
+import StrictHlsSegmentIdGenerator from 'com.p2pengine.core.segment.StrictHlsSegmentIdGenerator';
+import MimeType from 'com.p2pengine.sdk.MimeType';
+import TimeUnit from 'java.util.concurrent.TimeUnit';
+/**
+ * UTSAndroid 为平台内置对象，不需要 import 可直接调用其API，[详见](https://uniapp.dcloud.net.cn/uts/utsandroid.html#utsandroid)
+ */
+let logArr = [LogLevel.VERBOSE,LogLevel.DEBUG,LogLevel.INFO,LogLevel.WARN,LogLevel.ERROR];
+let zoneArr = [TrackerZone.Europe,TrackerZone.HongKong,TrackerZone.USA];
+
+export type ConfigOptions = {
+  logEnabled?: boolean,// 是否打印日志 默认false
+  logLevel?: number,// 打印日志的级别0:VERBOSE,1:DEBUG,2:INFO,3:WARN,4:ERROR 默认3
+  trackerZone?:number,// tracker服务器地址所在国家的枚举，分为0:Europe,1:HongKong,2:USA 默认0
+  downloadTimeout?:number,// HTTP下载ts文件超时时间  默认30000ms
+  localPortHls?:number,// HLS本地代理服务器的端口号(默认随机端口)
+  localPortDash?:number,// DASH本地代理服务器的端口号(默认随机端口)
+  diskCacheLimit?:number,// 点播模式下P2P在磁盘缓存的最大数据量(设为0可以禁用磁盘缓存) 默认2000*1024*1024
+  memoryCacheCountLimit?:number,// P2P在内存缓存的最大数据量，用ts文件个数表示 默认15
+  maxPeerConnections?:number,// 最大连接节点数量 默认25
+  useHttpRange?:boolean,// 在可能的情况下使用Http Range请求来补足p2p下载超时的剩余部分数据 默认true
+  httpHeadersForHls?:Map<string,string>,// 设置请求ts和m3u8时的HTTP请求头 默认null
+  httpHeadersForDash?:Map<string,string>,// 设置请求Dash文件时的HTTP请求头 默认null
+  httpLoadTime?:number,// P2P下载超时后留给HTTP下载的时间 默认3s
+  sharePlaylist?:boolean,// 是否允许m3u8文件的P2P传输 默认false
+  insertTimeOffsetTag?:number,// 仅在直播模式生效，在m3u8文件中插入 "#EXT-X-START:TIME-OFFSET=[timeOffset]"，强制播放器从某个位置开始加载，其中 [timeOffset] 是在播放列表的偏移量，如果为负则从播放列表结尾往前偏移（单位：秒）
+  mediaFileSeparator?:string,// 媒体文件后缀分隔符 默认“.”
+}
+
+
+//初始化 
+export  function initP2p (token:string,configOptions:ConfigOptions|null=null):void {
+	
+	let configBuilder = P2pConfig.Builder();
+	if(configOptions!=null){
+		if(configOptions.logEnabled!=null){
+			configBuilder=configBuilder.logEnabled(configOptions.logEnabled as boolean);
+		}
+		if(configOptions.logLevel!=null){
+		
+			configBuilder=configBuilder.logLevel(logArr[configOptions.logLevel as number]);
+		}
+		if(configOptions.trackerZone!=null){
+			configBuilder=configBuilder.trackerZone(zoneArr[configOptions.trackerZone as number]);
+		}
+		if(configOptions.downloadTimeout!=null){
+			configBuilder=configBuilder.downloadTimeout((configOptions.downloadTimeout as number).toInt(),TimeUnit.MILLISECONDS);
+		}
+		if(configOptions.localPortHls!=null){
+		
+			configBuilder=configBuilder.localPortHls((configOptions.localPortHls as number).toInt());
+		}
+		if(configOptions.localPortDash!=null){
+		
+			configBuilder=configBuilder.localPortDash((configOptions.localPortDash as number).toInt());
+		}
+		if(configOptions.diskCacheLimit!=null){
+		
+			configBuilder=configBuilder.diskCacheLimit((configOptions.diskCacheLimit as number).toLong());
+		}
+		if(configOptions.memoryCacheCountLimit!=null){
+		
+			configBuilder=configBuilder.memoryCacheCountLimit((configOptions.memoryCacheCountLimit as number).toInt());
+		}
+		if(configOptions.maxPeerConnections!=null){
+		
+			configBuilder=configBuilder.maxPeerConnections((configOptions.maxPeerConnections as number).toInt());
+		}
+		if(configOptions.useHttpRange!=null){
+		
+			configBuilder=configBuilder.useHttpRange(configOptions.useHttpRange as boolean);
+		}
+		if(configOptions.httpHeadersForHls!=null){
+		
+			configBuilder=configBuilder.httpHeadersForHls(configOptions.httpHeadersForHls as Map<string,string>);
+		}
+		if(configOptions.httpHeadersForDash!=null){
+		
+			configBuilder=configBuilder.httpHeadersForDash(configOptions.httpHeadersForDash as Map<string,string>);
+		}
+		if(configOptions.httpLoadTime!=null){
+		
+			configBuilder=configBuilder.httpLoadTime(((configOptions.httpLoadTime as number)*1000).toLong());
+		}
+		if(configOptions.sharePlaylist!=null){
+		
+			configBuilder=configBuilder.sharePlaylist(configOptions.sharePlaylist as boolean);
+		}
+		if(configOptions.insertTimeOffsetTag!=null){
+		
+			configBuilder=configBuilder.insertTimeOffsetTag((configOptions.insertTimeOffsetTag as number).toDouble());
+		}
+		if(configOptions.mediaFileSeparator!=null){
+		
+			configBuilder=configBuilder.mediaFileSeparator(configOptions.mediaFileSeparator as string);
+		}
+	}
+	
+	let config=configBuilder.build();
+	P2pEngine.init(UTSAndroid.getAppContext()!, token, config);
+	
+
+}
+//如果媒体文件是由多个服务器生成的，为避免冲突，请调用此函数：
+export function setHlsSegmentIdGenerator():void{
+	
+	P2pEngine.instance?.setHlsSegmentIdGenerator(new StrictHlsSegmentIdGenerator());
+	
+}
+
+//将url转换成p2pUrl
+//除了原始播放地址(m3u8/mpd)，同时传入videoId用以构造channelId
+//除了原始播放地址(m3u8/mpd)以及videoId，同时传入mimeType（目前支持MimeType.APPLICATION_M3U8和MimeType.APPLICATION_MPD），用于无".m3u8"或".mpd"后缀的url。
+export function  getP2pUrl(url : string,videoId:string|null=null,mimeType:string|null=null) : string {
+	let parseUrl:string;
+	
+	if(videoId!=null){
+		if(mimeType!=null){
+			switch(mimeType){
+				case 'm3u8':
+					parseUrl= P2pEngine.instance!.parseStreamUrl(url,videoId,MimeType.APPLICATION_M3U8);
+					break;
+				case 'mpd':
+					parseUrl= P2pEngine.instance!.parseStreamUrl(url,videoId,MimeType.APPLICATION_MPD);
+					break;
+				default:
+					parseUrl= P2pEngine.instance!.parseStreamUrl(url,videoId);
+			}
+			
+		}else{
+			parseUrl= P2pEngine.instance!.parseStreamUrl(url,videoId);
+		}
+		
+	}else{
+		parseUrl=P2pEngine.instance!.parseStreamUrl(url);
+		
+	}
+    return  parseUrl;
+}
+//当前插件的版本号。
+export function getP2pEngineVersion():string{
+	return P2pEngine.version;
+}
+//是否已与CDNBye后台建立连接。
+export function p2pIsConnected():boolean{
+	return P2pEngine.instance!.isConnected;
+}
+
+//立即停止P2P加速并释放资源，一般只需要在退出APP的时候调用即可。SDK采用"懒释放"的策略，只有在重启p2p的时候才释放资源。对于性能较差的设备起播耗时可能比较明显，建议在视频播放之前提前调用 engine.stopP2p() 。
+export function stopP2p():void{
+	 P2pEngine.instance!.stopP2p();
+}
+
+//重启P2P加速服务，一般不需要调用。
+export function restartP2p():boolean{
+	return P2pEngine.instance!.restartP2p();
+}
+
+//获取对等连接的id。
+export function peerId():string{
+	return P2pEngine.instance!.peerId;
+}
+
+
+//动态设置请求ts和m3u8时的HTTP请求头。
+export function setHttpHeadersForHls(headers: Map<String, String>):void{
+	 P2pEngine.instance!.setHttpHeadersForHls(headers);
+}
+
+
+//动态设置请求Dash文件时的HTTP请求头。
+export function setHttpHeadersForDash(headers: Map<String, String>):void{
+	 P2pEngine.instance!.setHttpHeadersForDash(headers);
+}
+
+//运行时动态关闭P2P，在播放下一个媒体文件时才生效。
+export function disableP2p():void{
+	 P2pEngine.instance!.disableP2p();
+}
+
+
+//运行时动态开启P2P，在播放下一个媒体文件时才生效。
+export function enableP2p():void{
+	 P2pEngine.instance!.enableP2p();
+}
+
+//停止P2P并关闭代理服务器。
+export function shutdownP2p():void{
+	 P2pEngine.instance!.shutdown();
+}
+
+
+
+
+

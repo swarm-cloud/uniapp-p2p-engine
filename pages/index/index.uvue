@@ -1,0 +1,104 @@
+<template>
+	<view class="content">
+	
+		<video class="video" ref="video" id="video" :header="header"  :src="src" @error="onError" :controls="true"></video>
+		<button type="primary" @tap="initCdnbye">初始化cdnbye</button>
+		 <button @tap="startPlay">p2p播放</button>
+		 <button @tap="stop">停止播放</button>
+		 <button @tap="stopP2p">停止P2P</button>
+		 <button @tap="isConnected">是否CDNBye连接</button>
+		 
+		 
+	</view>
+</template>
+
+<script>
+	
+	import { ConfigOptions,initP2p,getP2pUrl,getP2pEngineVersion,p2pIsConnected,shutdownP2p } from "@/uni_modules/xtf-swarmcloud";
+	export default {
+		onReady() {
+			//注意uniappx 的video组建ios没有实现 请自行更换其他播放器
+		      this.videoContext = uni.createVideoContext('video', this);
+		    },
+		data() {
+			return {
+				videoContext: null as VideoContext | null,
+				header: {
+				          'User-Agent': 'User-Agent test',
+				          'header': 'header test',
+				          'cookie': 'cookie test'
+				        } as UTSJSONObject,
+				// 属性
+				src:"",
+				oldsrc: "https://s5.bfengbf.com/video/17haoyinlecangkudierji/20240216/index.m3u8",
+				
+			}
+		},
+		onLoad() {
+
+		},
+		onShow() {
+			
+		},
+		methods: {
+			initCdnbye: function () {
+				
+				let options = {
+				   logEnabled: true,
+				   logLevel: 1,
+				   trackerZone:0
+				 } as ConfigOptions;
+				 initP2p("4-iRPC_GR",options);
+				 console.log(getP2pEngineVersion());
+				 
+			},
+			
+			startPlay(){
+				this.src=getP2pUrl(this.oldsrc);
+				console.log(this.src);
+				
+				this.videoContext?.play();
+				
+				
+				
+				
+			},
+			isConnected(){
+				//开始播放了才为true
+				console.log(p2pIsConnected());
+			},
+			stopP2p(){
+				shutdownP2p();
+			},
+			stop(){
+				this.videoContext?.stop();
+			},
+			
+			onError: function (res : UniVideoErrorEvent) {
+			        console.log(res.type + " -> " + JSON.stringify(res.detail));
+			       
+			},
+
+		}
+	}
+</script>
+
+<style>
+	.content {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.logo {
+		height: 200rpx;
+		width: 200rpx;
+		margin-top: 200rpx;
+		margin-bottom: 50rpx;
+	}
+
+	.title {
+		font-size: 36rpx;
+		color: #8f8f94;
+	}
+</style>
