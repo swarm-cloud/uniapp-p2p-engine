@@ -46,6 +46,9 @@ console.log(p2pPlayUrl);
 ## 配置项
 ```javascript
 export type ConfigOptions = {
+  p2pEnabled?: boolean,// 开启或关闭p2p engine 默认true
+  useStrictHlsSegmentId?: boolean,//使用基于url的SegmentId，替代默认基于序列号的 默认false
+  isSetTopBox?: boolean,// 如果运行于机顶盒请设置成true 默认false 安卓有 ios没有
   logEnabled?: boolean,// 是否打印日志 默认false
   logLevel?: number,// 打印日志的级别0:VERBOSE,1:DEBUG,2:INFO,3:WARN,4:ERROR 默认3
   trackerZone?:number,// tracker服务器地址所在国家的枚举，分为0:Europe,1:HongKong,2:USA 默认0
