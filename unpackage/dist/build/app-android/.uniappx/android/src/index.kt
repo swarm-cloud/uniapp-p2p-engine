@@ -1,5 +1,5 @@
 @file:Suppress("UNCHECKED_CAST", "USELESS_CAST", "INAPPLICABLE_JVM_NAME")
-package uni.UNI90FFBD1;
+package uni.UNI1EF92C5;
 import io.dcloud.uniapp.*;
 import io.dcloud.uniapp.extapi.*;
 import io.dcloud.uniapp.framework.*;
@@ -65,14 +65,14 @@ open class GenApp : BaseApp {
     }
 }
 val GenAppClass = CreateVueAppComponent(GenApp::class.java, fun(): VueComponentOptions {
-    return VueComponentOptions(name = "", inheritAttrs = true, inject = Map(), props = Map(), propsNeedCastKeys = utsArrayOf(), emits = Map(), components = Map(), styles = GenApp.styles);
+    return VueComponentOptions(type = "app", name = "", inheritAttrs = true, inject = Map(), props = Map(), propsNeedCastKeys = utsArrayOf(), emits = Map(), components = Map(), styles = GenApp.styles);
 }
 , fun(instance): GenApp {
     return GenApp(instance);
 }
 );
 val GenPagesIndexIndexClass = CreateVueComponent(GenPagesIndexIndex::class.java, fun(): VueComponentOptions {
-    return VueComponentOptions(name = "", inheritAttrs = GenPagesIndexIndex.inheritAttrs, inject = GenPagesIndexIndex.inject, props = GenPagesIndexIndex.props, propsNeedCastKeys = GenPagesIndexIndex.propsNeedCastKeys, emits = GenPagesIndexIndex.emits, components = GenPagesIndexIndex.components, styles = GenPagesIndexIndex.styles);
+    return VueComponentOptions(type = "page", name = "", inheritAttrs = GenPagesIndexIndex.inheritAttrs, inject = GenPagesIndexIndex.inject, props = GenPagesIndexIndex.props, propsNeedCastKeys = GenPagesIndexIndex.propsNeedCastKeys, emits = GenPagesIndexIndex.emits, components = GenPagesIndexIndex.components, styles = GenPagesIndexIndex.styles);
 }
 , fun(instance): GenPagesIndexIndex {
     return GenPagesIndexIndex(instance);
@@ -90,11 +90,11 @@ fun main(app: IApp) {
     (createApp()["app"] as VueApp).mount(app);
 }
 open class UniAppConfig : AppConfig {
-    override var name: String = "sctest";
-    override var appid: String = "__UNI__90FFBD1";
+    override var name: String = "swarmcloudP2p";
+    override var appid: String = "__UNI__1EF92C5";
     override var versionName: String = "1.0.0";
     override var versionCode: String = "100";
-    override var uniCompileVersion: String = "4.12";
+    override var uniCompileVersion: String = "4.13";
     constructor(){}
 }
 fun definePageRoutes() {

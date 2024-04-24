@@ -1,6 +1,6 @@
 
 	
-	import { ConfigOptions,initP2p,getP2pUrl,getP2pEngineVersion,p2pIsConnected,shutdownP2p } from "@/uni_modules/xtf-swarmcloud";
+	import { ConfigOptions,initP2p,getP2pUrl,getP2pEngineVersion,p2pIsConnected,stopP2p } from "@/uni_modules/cdnbye-swarmcloud";
 	export default {
 		onReady() {
 			//注意uniappx 的video组建ios没有实现 请自行更换其他播放器
@@ -54,7 +54,7 @@
 				console.log(p2pIsConnected(), " at pages/index/index.uvue:68");
 			},
 			stopP2p(){
-				shutdownP2p();
+				stopP2p();
 			},
 			stop(){
 				this.videoContext?.stop();

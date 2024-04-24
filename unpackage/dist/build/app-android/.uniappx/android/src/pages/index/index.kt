@@ -1,5 +1,5 @@
 @file:Suppress("UNCHECKED_CAST", "USELESS_CAST", "INAPPLICABLE_JVM_NAME")
-package uni.UNI90FFBD1;
+package uni.UNI1EF92C5;
 import io.dcloud.uniapp.*;
 import io.dcloud.uniapp.extapi.*;
 import io.dcloud.uniapp.framework.*;
@@ -14,11 +14,12 @@ import kotlinx.coroutines.CoroutineScope;
 import kotlinx.coroutines.Deferred;
 import kotlinx.coroutines.Dispatchers;
 import kotlinx.coroutines.async;
-import uts.sdk.modules.xtfSwarmcloud.MyLogLevel;
-import uts.sdk.modules.xtfSwarmcloud.MyTrackerZone;
-import uts.sdk.modules.xtfSwarmcloud.ConfigOptions;
-import uts.sdk.modules.xtfSwarmcloud.initP2p;
-import uts.sdk.modules.xtfSwarmcloud.p2pUrl;
+import uts.sdk.modules.cdnbyeSwarmcloud.ConfigOptions;
+import uts.sdk.modules.cdnbyeSwarmcloud.initP2p;
+import uts.sdk.modules.cdnbyeSwarmcloud.getP2pUrl;
+import uts.sdk.modules.cdnbyeSwarmcloud.getP2pEngineVersion;
+import uts.sdk.modules.cdnbyeSwarmcloud.p2pIsConnected;
+import uts.sdk.modules.cdnbyeSwarmcloud.stopP2p;
 import io.dcloud.uniapp.extapi.createVideoContext as uni_createVideoContext;
 open class GenPagesIndexIndex : BasePage {
     constructor(instance: ComponentInternalInstance) : super(instance) {
@@ -42,10 +43,16 @@ open class GenPagesIndexIndex : BasePage {
             createElementVNode("button", utsMapOf("type" to "primary", "onClick" to _ctx.initCdnbye), "初始化cdnbye", 8, utsArrayOf(
                 "onClick"
             )),
-            createElementVNode("button", utsMapOf("onClick" to _ctx.startPlay), "播放", 8, utsArrayOf(
+            createElementVNode("button", utsMapOf("onClick" to _ctx.startPlay), "p2p播放", 8, utsArrayOf(
                 "onClick"
             )),
-            createElementVNode("button", utsMapOf("onClick" to _ctx.stop), "停止", 8, utsArrayOf(
+            createElementVNode("button", utsMapOf("onClick" to _ctx.stop), "停止播放", 8, utsArrayOf(
+                "onClick"
+            )),
+            createElementVNode("button", utsMapOf("onClick" to _ctx.stopP2p), "停止P2P", 8, utsArrayOf(
+                "onClick"
+            )),
+            createElementVNode("button", utsMapOf("onClick" to _ctx.isConnected), "是否CDNBye连接", 8, utsArrayOf(
                 "onClick"
             ))
         ));
@@ -64,15 +71,23 @@ open class GenPagesIndexIndex : BasePage {
     }
     override fun `$initMethods`() {
         this.initCdnbye = fun() {
-            console.log(UTSAndroid.`typeof`( MyLogLevel.DEBUG), " at pages/index/index.uvue:30");
-            var options = ConfigOptions(logEnabled = true, logLevel = MyLogLevel.DEBUG as Number, trackerZone = MyTrackerZone.Europe as Number);
+            var options = ConfigOptions(logEnabled = true, logLevel = 1, trackerZone = 0);
             initP2p("4-iRPC_GR", options);
+            console.log(getP2pEngineVersion(), " at pages/index/index.uvue:38");
         }
         ;
         this.startPlay = fun() {
-            this.src = p2pUrl(this.oldsrc);
-            console.log(this.src, " at pages/index/index.uvue:41");
+            this.src = getP2pUrl(this.oldsrc);
+            console.log(this.src, " at pages/index/index.uvue:44");
             this.videoContext?.play();
+        }
+        ;
+        this.isConnected = fun() {
+            console.log(p2pIsConnected(), " at pages/index/index.uvue:54");
+        }
+        ;
+        this.stopP2p = fun() {
+            stopP2p();
         }
         ;
         this.stop = fun() {
@@ -80,12 +95,14 @@ open class GenPagesIndexIndex : BasePage {
         }
         ;
         this.onError = fun(res: UniVideoErrorEvent) {
-            console.log(res.type + " -> " + JSON.stringify(res.detail), " at pages/index/index.uvue:50");
+            console.log(res.type + " -> " + JSON.stringify(res.detail), " at pages/index/index.uvue:64");
         }
         ;
     }
     open lateinit var initCdnbye: () -> Unit;
     open lateinit var startPlay: () -> Unit;
+    open lateinit var isConnected: () -> Unit;
+    open lateinit var stopP2p: () -> Unit;
     open lateinit var stop: () -> Unit;
     open lateinit var onError: (res: UniVideoErrorEvent) -> Unit;
     companion object {

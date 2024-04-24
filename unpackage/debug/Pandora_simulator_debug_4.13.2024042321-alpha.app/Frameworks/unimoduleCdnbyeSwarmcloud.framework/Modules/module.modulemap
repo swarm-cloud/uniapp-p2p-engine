@@ -1,0 +1,11 @@
+framework module unimoduleCdnbyeSwarmcloud {
+  umbrella header "unimoduleCdnbyeSwarmcloud.h"
+  export *
+
+  module * { export * }
+}
+
+module unimoduleCdnbyeSwarmcloud.Swift {
+  header "unimoduleCdnbyeSwarmcloud-Swift.h"
+  requires objc
+}

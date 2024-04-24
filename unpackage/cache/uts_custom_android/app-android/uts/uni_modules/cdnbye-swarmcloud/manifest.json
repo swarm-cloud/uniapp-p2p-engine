@@ -1,0 +1,29 @@
+{
+  "version": "1",
+  "env": {
+    "compilerVersion": "4.13.2024042321-alpha"
+  },
+  "files": {
+    "utssdk/app-android/index.uts": {
+      "md5": "bc3dd222236c7e45f76e8126b66fd3f7"
+    },
+    "package.json": {
+      "md5": "00789e2d547babcd473076acdd05469b"
+    },
+    "utssdk/app-android/AndroidManifest.xml": {
+      "md5": "d08bb35069c1b6f18556d228dc3a9c82"
+    },
+    "utssdk/app-android/config.json": {
+      "md5": "fd13427213b297f019dd4c4915714fba"
+    },
+    "utssdk/app-android/proguard-rules.pro": {
+      "md5": "37d9d8d71bf5805d94e7f43fb2f558ba"
+    },
+    "utssdk/app-android/libs/datachannel.aar": {
+      "md5": "61ae7064088ca0703feed5ef0ba619e0"
+    },
+    "utssdk/app-android/libs/swarmcloud-3.6.10.jar": {
+      "md5": "25b434b036c25a63d0a129321a546740"
+    }
+  }
+}

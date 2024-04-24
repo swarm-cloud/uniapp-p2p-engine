@@ -1,13 +1,13 @@
 {
-  "id": "__UNI__90FFBD1",
-  "name": "sctest",
+  "id": "__UNI__1EF92C5",
+  "name": "swarmcloudP2p",
   "description": "",
   "version": {
     "name": "1.0.0",
     "code": "100"
   },
   "uni-app-x": {
-    "compilerVersion": "4.12"
+    "compilerVersion": "4.13"
   },
   "app": {
     "distribute": {

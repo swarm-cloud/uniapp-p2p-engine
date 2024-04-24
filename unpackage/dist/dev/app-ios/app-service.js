@@ -2,8 +2,8 @@
 	'use strict';
 
 	const { registerUTSInterface, initUTSProxyClass, initUTSProxyFunction, initUTSPackageName, initUTSIndexClassName, initUTSClassName } = uni;
-	const name = 'xtfSwarmcloud';
-	const moduleName = 'xtf-swarmcloud';
+	const name = 'cdnbyeSwarmcloud';
+	const moduleName = 'P2P流媒体加速引擎 播放器P2P传输插件';
 	const moduleType = '';
 	const errMsg = ``;
 	const is_uni_modules = true;
@@ -12,11 +12,11 @@
 
 
 
-	const initP2p = /*#__PURE__*/ initUTSProxyFunction(false, { moduleName, moduleType, errMsg, main: true, package: pkg, class: cls, name: 'initP2pByJs', params: [{"name":"token","type":"string"},{"name":"configOptions","type":"UTSSDKModulesXtfSwarmcloudConfigOptionsJSONObject","default":"UTSNull"}], return: ""});
+	const initP2p = /*#__PURE__*/ initUTSProxyFunction(false, { moduleName, moduleType, errMsg, main: true, package: pkg, class: cls, name: 'initP2pByJs', params: [{"name":"token","type":"string"},{"name":"configOptions","type":"UTSSDKModulesCdnbyeSwarmcloudConfigOptionsJSONObject","default":"UTSNull"}], return: ""});
 	const getP2pUrl = /*#__PURE__*/ initUTSProxyFunction(false, { moduleName, moduleType, errMsg, main: true, package: pkg, class: cls, name: 'getP2pUrlByJs', params: [{"name":"url","type":"string"},{"name":"videoId","type":"","default":"UTSNull"}], return: ""});
 	const getP2pEngineVersion = /*#__PURE__*/ initUTSProxyFunction(false, { moduleName, moduleType, errMsg, main: true, package: pkg, class: cls, name: 'getP2pEngineVersionByJs', params: [], return: ""});
 	const p2pIsConnected = /*#__PURE__*/ initUTSProxyFunction(false, { moduleName, moduleType, errMsg, main: true, package: pkg, class: cls, name: 'p2pIsConnectedByJs', params: [], return: ""});
-	const shutdownP2p = /*#__PURE__*/ initUTSProxyFunction(false, { moduleName, moduleType, errMsg, main: true, package: pkg, class: cls, name: 'shutdownP2pByJs', params: [], return: ""});
+	const stopP2p = /*#__PURE__*/ initUTSProxyFunction(false, { moduleName, moduleType, errMsg, main: true, package: pkg, class: cls, name: 'stopP2pByJs', params: [], return: ""});
 
 	const _sfc_main$1 = vue.defineComponent({
 	    onReady() {
@@ -60,8 +60,8 @@
 	            //开始播放了才为true
 	            uni.__log__('log', 'at pages/index/index.uvue:68', p2pIsConnected());
 	        },
-	        stopP2p() {
-	            shutdownP2p();
+	        mystopP2p() {
+	            stopP2p();
 	        },
 	        stop() {
 	            var _a;
@@ -83,36 +83,36 @@
 	  return target;
 	};
 
-	function _sfc_render(_ctx, _cache) {
+	function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
 	  return vue.openBlock(), vue.createElementBlock("view", { class: "content" }, [
 	    vue.createElementVNode("video", {
 	      class: "video",
 	      ref: "video",
 	      id: "video",
-	      header: _ctx.header,
-	      src: _ctx.src,
-	      onError: _cache[0] || (_cache[0] = (...args) => _ctx.onError && _ctx.onError(...args)),
+	      header: $data.header,
+	      src: $data.src,
+	      onError: _cache[0] || (_cache[0] = (...args) => $options.onError && $options.onError(...args)),
 	      controls: true
 	    }, null, 40, ["header", "src"]),
 	    vue.createElementVNode("button", {
 	      type: "primary",
-	      onClick: _cache[1] || (_cache[1] = (...args) => _ctx.initCdnbye && _ctx.initCdnbye(...args))
+	      onClick: _cache[1] || (_cache[1] = (...args) => $options.initCdnbye && $options.initCdnbye(...args))
 	    }, "\u521D\u59CB\u5316cdnbye"),
 	    vue.createElementVNode("button", {
-	      onClick: _cache[2] || (_cache[2] = (...args) => _ctx.startPlay && _ctx.startPlay(...args))
+	      onClick: _cache[2] || (_cache[2] = (...args) => $options.startPlay && $options.startPlay(...args))
 	    }, "p2p\u64AD\u653E"),
 	    vue.createElementVNode("button", {
-	      onClick: _cache[3] || (_cache[3] = (...args) => _ctx.stop && _ctx.stop(...args))
+	      onClick: _cache[3] || (_cache[3] = (...args) => $options.stop && $options.stop(...args))
 	    }, "\u505C\u6B62\u64AD\u653E"),
 	    vue.createElementVNode("button", {
-	      onClick: _cache[4] || (_cache[4] = (...args) => _ctx.stopP2p && _ctx.stopP2p(...args))
+	      onClick: _cache[4] || (_cache[4] = (...args) => $options.mystopP2p && $options.mystopP2p(...args))
 	    }, "\u505C\u6B62P2P"),
 	    vue.createElementVNode("button", {
-	      onClick: _cache[5] || (_cache[5] = (...args) => _ctx.isConnected && _ctx.isConnected(...args))
+	      onClick: _cache[5] || (_cache[5] = (...args) => $options.isConnected && $options.isConnected(...args))
 	    }, "\u662F\u5426CDNBye\u8FDE\u63A5")
 	  ]);
 	}
-	const PagesIndexIndex = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render], ["styles", [_style_0$1]], ["__file", "/Users/taifuxia/Documents/HBuilderProjects/sctest/pages/index/index.uvue"]]);
+	const PagesIndexIndex = /* @__PURE__ */ _export_sfc(_sfc_main$1, [["render", _sfc_render], ["styles", [_style_0$1]], ["__file", "/Users/taifuxia/Documents/HBuilderProjects/uniapp-p2p-engine/pages/index/index.uvue"]]);
 
 	__definePage('pages/index/index',PagesIndexIndex);
 
@@ -133,7 +133,7 @@
 
 	const _style_0 = {"uni-row":{"":{"flexDirection":"row"}},"uni-column":{"":{"flexDirection":"column"}}};
 
-	const App = /* @__PURE__ */ _export_sfc(_sfc_main, [["styles", [_style_0]], ["__file", "/Users/taifuxia/Documents/HBuilderProjects/sctest/App.uvue"]]);
+	const App = /* @__PURE__ */ _export_sfc(_sfc_main, [["styles", [_style_0]], ["__file", "/Users/taifuxia/Documents/HBuilderProjects/uniapp-p2p-engine/App.uvue"]]);
 
 	const __global__ = typeof globalThis === 'undefined' ? Function('return this')() : globalThis;
 	__global__.__uniX = true;

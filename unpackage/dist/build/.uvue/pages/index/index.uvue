@@ -1,8 +1,9 @@
 
 	
-	import { MyLogLevel,MyTrackerZone,ConfigOptions,initP2p,p2pUrl } from "@/uni_modules/xtf-swarmcloud";
+	import { ConfigOptions,initP2p,getP2pUrl,getP2pEngineVersion,p2pIsConnected,stopP2p } from "@/uni_modules/cdnbye-swarmcloud";
 	export default {
 		onReady() {
+			//注意uniappx 的video组建ios没有实现 请自行更换其他播放器
 		      this.videoContext = uni.createVideoContext('video', this);
 		    },
 		data() {
@@ -27,20 +28,33 @@
 		},
 		methods: {
 			initCdnbye: function () {
-				console.log(typeof(MyLogLevel.DEBUG));
+				
 				let options = {
 				   logEnabled: true,
-				   logLevel: MyLogLevel.DEBUG as number,
-				   trackerZone:MyTrackerZone.Europe as number
+				   logLevel: 1,
+				   trackerZone:0
 				 } as ConfigOptions;
 				 initP2p("4-iRPC_GR",options);
+				 console.log(getP2pEngineVersion());
+				 
 			},
 			
 			startPlay(){
-				this.src=p2pUrl(this.oldsrc);
+				this.src=getP2pUrl(this.oldsrc);
 				console.log(this.src);
+				
 				this.videoContext?.play();
 				
+				
+				
+				
+			},
+			isConnected(){
+				//开始播放了才为true
+				console.log(p2pIsConnected());
+			},
+			stopP2p(){
+				stopP2p();
 			},
 			stop(){
 				this.videoContext?.stop();
@@ -72,8 +86,10 @@ const _cache = this.$.renderCache
       type: "primary",
       onClick: _ctx.initCdnbye
     }), "初始化cdnbye", 8, ["onClick"]),
-    createElementVNode("button", utsMapOf({ onClick: _ctx.startPlay }), "播放", 8, ["onClick"]),
-    createElementVNode("button", utsMapOf({ onClick: _ctx.stop }), "停止", 8, ["onClick"])
+    createElementVNode("button", utsMapOf({ onClick: _ctx.startPlay }), "p2p播放", 8, ["onClick"]),
+    createElementVNode("button", utsMapOf({ onClick: _ctx.stop }), "停止播放", 8, ["onClick"]),
+    createElementVNode("button", utsMapOf({ onClick: _ctx.stopP2p }), "停止P2P", 8, ["onClick"]),
+    createElementVNode("button", utsMapOf({ onClick: _ctx.isConnected }), "是否CDNBye连接", 8, ["onClick"])
   ])
 }
 const GenPagesIndexIndexStyles = [utsMapOf([["content", padStyleMapOf(utsMapOf([["display", "flex"], ["alignItems", "center"], ["justifyContent", "center"]]))], ["logo", padStyleMapOf(utsMapOf([["height", "200rpx"], ["width", "200rpx"], ["marginTop", "200rpx"], ["marginBottom", "50rpx"]]))], ["title", padStyleMapOf(utsMapOf([["fontSize", "36rpx"], ["color", "#8f8f94"]]))]])]

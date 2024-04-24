@@ -16,11 +16,11 @@ export function main(app: IApp) {
 
 import { AppConfig } from "io.dcloud.uniapp.appframe"
 export class UniAppConfig extends AppConfig {
-    override name: string = "sctest"
-    override appid: string = "__UNI__90FFBD1"
+    override name: string = "swarmcloudP2p"
+    override appid: string = "__UNI__1EF92C5"
     override versionName: string = "1.0.0"
     override versionCode: string = "100"
-    override uniCompileVersion: string = "4.12"
+    override uniCompileVersion: string = "4.13"
     
     constructor() {}
 }

@@ -5,7 +5,7 @@
 		<button type="primary" @tap="initCdnbye">初始化cdnbye</button>
 		 <button @tap="startPlay">p2p播放</button>
 		 <button @tap="stop">停止播放</button>
-		 <button @tap="stopP2p">停止P2P</button>
+		 <button @tap="mystopP2p">停止P2P</button>
 		 <button @tap="isConnected">是否CDNBye连接</button>
 		 
 		 
@@ -14,7 +14,7 @@
 
 <script>
 	
-	import { ConfigOptions,initP2p,getP2pUrl,getP2pEngineVersion,p2pIsConnected,stopP2p } from "@/uni_modules/xtf-swarmcloud";
+	import { ConfigOptions,initP2p,getP2pUrl,getP2pEngineVersion,p2pIsConnected,stopP2p } from "@/uni_modules/cdnbye-swarmcloud";
 	export default {
 		onReady() {
 			//注意uniappx 的video组建ios没有实现 请自行更换其他播放器
@@ -67,7 +67,7 @@
 				//开始播放了才为true
 				console.log(p2pIsConnected());
 			},
-			stopP2p(){
+			mystopP2p(){
 				stopP2p();
 			},
 			stop(){
