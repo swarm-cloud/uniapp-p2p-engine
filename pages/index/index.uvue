@@ -50,12 +50,7 @@
 			startPlay(){
 				this.src=getP2pUrl(this.oldsrc);
 				console.log(this.src);
-
 				this.videoContext?.play();
-
-
-
-
 			},
 			isConnected(){
 				//开始播放了才为true
