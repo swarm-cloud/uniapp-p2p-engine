@@ -1,5 +1,5 @@
 <h1 align="center"><a href="" target="_blank" rel="noopener noreferrer"><img width="250" src="https://www.cdnbye.com/img/logo.png" alt="logo"></a></h1>
-<h4 align="center">Uniapp 视频/直播APP省流量&加速神器.</h4>
+<h4 align="center">UniappX 视频/直播APP省流量&加速引擎</h4>
 
 
 该插件的优势如下：
@@ -7,31 +7,30 @@
 - 支持基于HLS流媒体协议(m3u8)的直播和点播场景
 - 支持加密HLS传输
 - 支持ts文件缓存从而避免重复下载
-- 几行代码即可在现有uniapp或uniappx项目中快速集成
+- 几行代码即可在现有uniappx项目中快速集成
 - 支持任何播放器
 - 通过预加载形式实现P2P加速，完全不影响用户的播放体验
 - 高可配置化，用户可以根据特定的使用环境调整各个参数
 - 通过有效的调度策略来保证用户的播放体验以及p2p分享率
-- Tracker服务器根据访问IP的ISP、地域等进行智能调度
 
 ## 使用方法
 1，导入uts插件
 ```javascript
 import { ConfigOptions,initP2p,getP2pUrl,getP2pEngineVersion,p2pIsConnected,stopP2p } from "@/uni_modules/cdnbye-swarmcloud";
-
 ```
+
 2，初始化插件，必须先初始化再调用其他方法 否则报错
 ```javascript
 //token去官网获取
 let token="";
 //构造配置项
 let options = {
-				   logEnabled: true,
-				   logLevel: 1,
-				   trackerZone:0
-				 } as ConfigOptions;
- //初始化    options可不传使用默认配置            
-initP2p(token,options);
+   logEnabled: true,
+   logLevel: 1,
+   trackerZone:0
+ } as ConfigOptions;
+// 初始化    options可不传使用默认配置
+initP2p(token, options);
 ```
 
 3，获取P2P播放地址
@@ -39,10 +38,11 @@ initP2p(token,options);
 //正常播放地址
 let playUrl="https://s5.bfengbf.com/video/17haoyinlecangkudierji/20240216/index.m3u8";
 //p2p地址
-let p2pPlayUrl=getP2pUrl(playUrl);
+let p2pPlayUrl = getP2pUrl(playUrl);
 console.log(p2pPlayUrl);
-//将p2pPlayUrl给播放器 
+//将p2pPlayUrl给播放器
 ```
+
 ## 配置项
 ```javascript
 export type ConfigOptions = {
@@ -67,9 +67,10 @@ export type ConfigOptions = {
   mediaFileSeparator?:string,// 媒体文件后缀分隔符 默认“.”
 }
 ```
+
 ## API
 ```javascript
-//初始化 
+//初始化
 function initP2p (token:string,configOptions:ConfigOptions|null=null):void
 
 //如果媒体文件是由多个服务器生成的，为避免冲突，请调用此函数：
@@ -119,8 +120,6 @@ function shutdownP2p():void
 
 ## 反馈及意见
 当你遇到任何问题时，可以通过在 GitHub 的 repo 提交 issues 来反馈问题，请尽可能的描述清楚遇到的问题，如果有错误信息也一同附带，并且在 Labels 中指明类型为 bug 或者其他。
-
-
 
 ## FAQ
 我们收集了一些[常见问题](https://www.cdnbye.com/faq.html)。在报告issue之前请先查看一下。
