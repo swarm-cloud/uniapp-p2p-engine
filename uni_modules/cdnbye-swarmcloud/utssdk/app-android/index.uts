@@ -178,13 +178,13 @@ export function peerId():string{
 
 
 //动态设置请求ts和m3u8时的HTTP请求头。
-export function setHttpHeadersForHls(headers: Map<String, String>):void{
+export function setHttpHeadersForHls(headers: Map<string, string>):void{
 	 P2pEngine.instance!.setHttpHeadersForHls(headers);
 }
 
 
 //动态设置请求Dash文件时的HTTP请求头。
-export function setHttpHeadersForDash(headers: Map<String, String>):void{
+export function setHttpHeadersForDash(headers: Map<string, string>):void{
 	 P2pEngine.instance!.setHttpHeadersForDash(headers);
 }
 

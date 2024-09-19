@@ -97,10 +97,10 @@ function restartP2p():boolean
 function peerId():string
 
 //动态设置请求ts和m3u8时的HTTP请求头。仅安卓
-function setHttpHeadersForHls(headers: Map<String, String>):void
+function setHttpHeadersForHls(headers: Map<string, string>):void
 
 //动态设置请求Dash文件时的HTTP请求头。仅安卓
-function setHttpHeadersForDash(headers: Map<String, String>):void
+function setHttpHeadersForDash(headers: Map<string, string>):void
 
 //运行时动态关闭P2P，在播放下一个媒体文件时才生效。
 function disableP2p():void
@@ -112,7 +112,7 @@ function enableP2p():void
 function shutdownP2p():void
 
 //动态设置请求ts和m3u8时的HTTP请求头。
-function setHttpHeadersForHls(headers: Map<String, String>):void
+function setHttpHeadersForHls(headers: Map<string, string>):void
 ```
 
 ## 获取Token

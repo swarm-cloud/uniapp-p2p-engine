@@ -154,6 +154,6 @@ export function shutdownP2p():void{
 	 P2pEngine.shared.shutdown();
 }
 //动态设置请求ts和m3u8时的HTTP请求头。
-export function setHttpHeadersForHls(headers: Map<String, String>):void{
+export function setHttpHeadersForHls(headers: Map<string, string>):void{
 	 P2pEngine.shared.setHttpHeadersForHls(headers);
 }
