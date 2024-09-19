@@ -110,6 +110,9 @@ function enableP2p():void
 
 //停止P2P并关闭代理服务器。
 function shutdownP2p():void
+
+//动态设置请求ts和m3u8时的HTTP请求头。
+function setHttpHeadersForHls(headers: Map<String, String>):void
 ```
 
 ## 获取Token

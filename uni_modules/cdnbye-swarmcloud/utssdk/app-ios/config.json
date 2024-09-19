@@ -3,7 +3,7 @@
 	"dependencies-pods": [ // 可选, 需要依赖的 CocoaPods 库, HBuilderX 3.8.5+ 版本支持
 		{
 			"name": "P2pEngine-iOS",
-			"version": "3.1.2"
+			"version": "3.2.5"
 		}
 	]
 }
