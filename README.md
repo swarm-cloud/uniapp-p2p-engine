@@ -96,7 +96,7 @@ function restartP2p():boolean
 //获取对等连接的id。
 function peerId():string
 
-//动态设置请求ts和m3u8时的HTTP请求头。仅安卓
+//动态设置请求ts和m3u8时的HTTP请求头。
 function setHttpHeadersForHls(headers: Map<string, string>):void
 
 //动态设置请求Dash文件时的HTTP请求头。仅安卓
@@ -111,8 +111,6 @@ function enableP2p():void
 //停止P2P并关闭代理服务器。
 function shutdownP2p():void
 
-//动态设置请求ts和m3u8时的HTTP请求头。
-function setHttpHeadersForHls(headers: Map<string, string>):void
 ```
 
 ## 获取Token
