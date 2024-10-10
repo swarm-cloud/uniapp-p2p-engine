@@ -1,8 +1,8 @@
 {
-	"deploymentTarget": "13",   // 可选，插件支持的最低 iOS 版本  默认：9.0"
-	"dependencies-pods": [ // 可选, 需要依赖的 CocoaPods 库, HBuilderX 3.8.5+ 版本支持
+	"deploymentTarget": "13",
+	"dependencies-pods": [
 		{
-			"name": "P2pEngine-iOS",
+			"name": "SwarmCloudKit",
 			"version": "3.2.5"
 		}
 	]

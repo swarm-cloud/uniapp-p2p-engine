@@ -1,44 +1,18 @@
-/**
- * 引用 iOS 系统库，示例如下：
- * import { UIDevice } from "UIKit";
- * [可选实现，按需引入]
- */
-// 从 DCloudUTSFoundation 依赖库中导入 UTSiOS 类
-/* import { UTSiOS } from "DCloudUTSFoundation";
-import { UIDevice } from "UIKit"; */
 
-import { P2pConfig,P2pEngine,TrackerZone,LogLevel } from "SwarmCloudKit";
+import { P2pConfig,P2pEngine,TrackerZone,LogLevel,SignalConfig,P2pStatisticsMonitor } from "SwarmCloudKit";
 import { Double } from 'Swift';
+import { ConfigOptions, onStatsCallback, StatsObject } from '../interface.uts';
 
 let logArr = [LogLevel.VERBOSE,LogLevel.DEBUG,LogLevel.INFO,LogLevel.WARN,LogLevel.ERROR];
-let zoneArr = [TrackerZone.Europe,TrackerZone.HongKong,TrackerZone.USA];
-export type ConfigOptions = {
-  p2pEnabled?: boolean,// 开启或关闭p2p engine 默认true
-  useStrictHlsSegmentId?: boolean,//使用基于url的SegmentId，替代默认基于序列号的 默认false
-  isSetTopBox?: boolean,// 如果运行于机顶盒请设置成true 默认false 安卓有 ios没有
-  logEnabled?: boolean,// 是否打印日志 默认false
-  logLevel?: number,// 打印日志的级别0:VERBOSE,1:DEBUG,2:INFO,3:WARN,4:ERROR 默认3
-  trackerZone?:number,// tracker服务器地址所在国家的枚举，分为0:Europe,1:HongKong,2:USA 默认0
-  downloadTimeout?:number,// HTTP下载ts文件超时时间  默认30000ms 安卓有 ios没有
-  localPortHls?:number,// HLS本地代理服务器的端口号(默认随机端口)
-  localPortDash?:number,// DASH本地代理服务器的端口号(默认随机端口) 安卓有 ios没有
-  diskCacheLimit?:number,// 点播模式下P2P在磁盘缓存的最大数据量(设为0可以禁用磁盘缓存) 默认2000*1024*1024
-  memoryCacheCountLimit?:number,// P2P在内存缓存的最大数据量，用ts文件个数表示 默认15
-  maxPeerConnections?:number,// 最大连接节点数量 默认25
-  useHttpRange?:boolean,// 在可能的情况下使用Http Range请求来补足p2p下载超时的剩余部分数据 默认true
-  httpHeadersForHls?:Map<string,string>,// 设置请求ts和m3u8时的HTTP请求头 默认null
-  httpHeadersForDash?:Map<string,string>,// 设置请求Dash文件时的HTTP请求头 默认null 安卓有 ios没有
-  httpLoadTime?:number,// P2P下载超时后留给HTTP下载的时间 默认3s
-  sharePlaylist?:boolean,// 是否允许m3u8文件的P2P传输 默认false
-  insertTimeOffsetTag?:number,// 仅在直播模式生效，在m3u8文件中插入 "#EXT-X-START:TIME-OFFSET=[timeOffset]"，强制播放器从某个位置开始加载，其中 [timeOffset] 是在播放列表的偏移量，如果为负则从播放列表结尾往前偏移（单位：秒）
-  mediaFileSeparator?:string,// 媒体文件后缀分隔符 默认“.”
-}
-//初始化 
-export  function initP2p (token:string,configOptions:ConfigOptions|null=null):void {
+let zoneArr = [TrackerZone.Europe,TrackerZone.HongKong,TrackerZone.USA,TrackerZone.China];
 
+export { ConfigOptions, StatsObject }
+
+//初始化 
+export function initP2p (token:string,configOptions:ConfigOptions|null=null):void {
 	
 	if(configOptions!=null){
-		let config = P2pConfig();
+		let config = P2pConfig(trackerZone=TrackerZone.Europe);
 			if(configOptions!.p2pEnabled!=null){
 				config.p2pEnabled=configOptions!.p2pEnabled as boolean;
 			}
@@ -78,23 +52,38 @@ export  function initP2p (token:string,configOptions:ConfigOptions|null=null):vo
 			if(configOptions!.sharePlaylist!=null){
 				config.sharePlaylist=configOptions!.sharePlaylist as boolean;
 			}
+			if(configOptions!.prefetchOnly!=null){
+				config.prefetchOnly=configOptions!.prefetchOnly as boolean;
+			}
+			if(configOptions!.downloadOnly!=null){
+				config.downloadOnly=configOptions!.downloadOnly as boolean;
+			}
 			if(configOptions!.insertTimeOffsetTag!=null){
-				config.playlistTimeOffset=(configOptions!.insertTimeOffsetTag as number).toDouble();
+				// config.playlistTimeOffset=(configOptions!.insertTimeOffsetTag as number).toDouble();
 			}
 			if(configOptions!.mediaFileSeparator!=null){
 				config.mediaFileSeparator=configOptions!.mediaFileSeparator as string;
 			}
-		
+			if(configOptions!.announce!=null){
+				config.announce=configOptions!.announce as string;
+			}
+			if(configOptions!.signalConfig!=null){
+				config.signalConfig=SignalConfig(mainAddr=configOptions!.signalConfig as string)
+			}
+			if(configOptions!.hlsMediaFiles!=null){
+				config.hlsMediaFiles=configOptions!.hlsMediaFiles as Array<string>
+			}
+			if(configOptions!.tag!=null){
+				config.customLabel=configOptions!.tag as string;
+			} else {
+				config.customLabel="uniapp";
+			}
 	
 		
 		P2pEngine.setup(token=token, config=config)
 	}else{
-		P2pEngine.setup(token=token) 
+		P2pEngine.setup(token=token, config=P2pConfig(trackerZone=TrackerZone.Europe)) 
 	}
-	console.log("初始化完成")
-	
-	
-	
 
 }
 //将url转换成p2pUrl
@@ -132,6 +121,10 @@ export function restartP2p():boolean{
 	return P2pEngine.shared.restartP2p();
 }
 
+export function notifyPlaybackStalled():void{
+	P2pEngine.shared.notifyPlaybackStalled();
+}
+
 //获取对等连接的id。
 export function peerId():string{
 	return P2pEngine.shared.peerId;
@@ -155,5 +148,36 @@ export function shutdownP2p():void{
 }
 //动态设置请求ts和m3u8时的HTTP请求头。
 export function setHttpHeadersForHls(headers: Map<string, string>):void{
-	 P2pEngine.shared.setHttpHeadersForHls(headers);
+	 P2pEngine.shared.setHttpHeadersForHls(headers=headers);
+}
+
+export function onP2pStats(callback: onStatsCallback):void{
+	let monitor = new P2pStatisticsMonitor();
+	monitor.onHttpDownloaded = ((value: Int) => {
+		callback({
+			httpDownloaded: value as number,
+		} as StatsObject)
+	});
+	monitor.onP2pUploaded = ((value: Int) => {
+		callback({
+			p2pUploaded: value as number,
+		} as StatsObject)
+	});
+	monitor.onP2pDownloaded = ((value: Int, speed: Int) => {
+		callback({
+			p2pDownloaded: value as number,
+			p2pDownloadSpeed: speed as number,
+		} as StatsObject)
+	});
+	monitor.onPeers = ((peers: Array<string>) => {
+		callback({
+			peers: peers.length,
+		} as StatsObject)
+	});
+	monitor.onServerConnected = ((connected:boolean) => {
+		callback({
+			serverConnected: connected, 
+		} as StatsObject)
+	});
+	P2pEngine.shared.p2pStatisticsMonitor = monitor
 }

@@ -1,7 +1,7 @@
 {
   "id": "cdnbye-swarmcloud",
   "displayName": "P2P流媒体加速引擎 播放器P2P传输插件 swarmcloud",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "播放器P2P传输插件,使用此插件后，任何播放器播放HLS(m3u8)点播直播，播放人数越多，播放越流畅，消耗的CDN流量越少，可为你节省60%CDN流量费",
   "keywords": [
     "P2P播放器",

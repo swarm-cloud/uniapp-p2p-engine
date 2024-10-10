@@ -1,43 +1,71 @@
 <template>
 	<view class="content">
 
-		<video class="video" ref="video" id="video" :header="header"  :src="src" @error="onError" :controls="true"></video>
+		<video class="video" ref="video" id="video" :src="src" @error="onError" :controls="true"></video>
+		
 		 <button @tap="startPlay">p2p播放</button>
 		 <button @tap="stop">停止播放</button>
 		 <button @tap="mystopP2p">停止P2P</button>
-		 <button @tap="isConnected">是否CDNBye连接</button>
-
 
 	</view>
+	<view class="uni-padding-wrap uni-common-mt">
+	    <view class="uni-flex uni-row">
+	      <text class="text-item">P2P: {{(p2pTraffic/1000).toFixed(1)}}MB</text>
+	      <text class="text-item">效率: {{ratio}}%</text>
+	    </view>
+	    <view class="uni-flex uni-row">
+	      <text class="text-item">上传: {{(uploaded/1000).toFixed(1)}}MB</text>
+	      <text class="text-item">已连接: {{connected}}</text>
+	    </view>
+	    <view class="uni-flex uni-row">
+	      <text class="text-item">Peers: {{peers}}</text>
+	      <text class="text-item">Version: {{version}}</text>
+	    </view>
+	  </view>
 </template>
 
 <script>
 
-	import { ConfigOptions,initP2p,getP2pUrl,getP2pEngineVersion,p2pIsConnected,stopP2p } from "@/uni_modules/cdnbye-swarmcloud";
+	import { ConfigOptions,initP2p,getP2pUrl,getP2pEngineVersion,p2pIsConnected,stopP2p, onP2pStats, StatsObject, setHttpHeadersForHls } from "@/uni_modules/cdnbye-swarmcloud";
 	export default {
 		onReady() {
 			//注意uniappx 的video组建ios没有实现 请自行更换其他播放器
             this.videoContext = uni.createVideoContext('video', this);
             let options = {
-                 logEnabled: true,
-                 logLevel: 1,
-                 trackerZone:0
+                 trackerZone:0,
+				 insertTimeOffsetTag: 0,
                } as ConfigOptions;
                initP2p("ZMuO5qHZg",options);        // 此处换成在控制台获取的token
-               console.log(getP2pEngineVersion());
+			   this.version = getP2pEngineVersion();
+			   onP2pStats((stats: StatsObject) => {
+				   if (stats.serverConnected != null) {
+					   this.connected = stats.serverConnected as boolean;
+				   } else if (stats.httpDownloaded != null) {
+					   this.httpTraffic += stats.httpDownloaded as number;
+					   this.ratio = (this.p2pTraffic/(this.httpTraffic + this.p2pTraffic)*100).toFixed(0);
+				   } else if (stats.p2pDownloaded != null) {
+					   this.p2pTraffic += stats.p2pDownloaded as number;
+					   this.ratio = (this.p2pTraffic/(this.httpTraffic + this.p2pTraffic)*100).toFixed(0);
+				   } else if (stats.p2pUploaded != null) {
+					   this.uploaded += stats.p2pUploaded as number;
+				   } else if (stats.peers != null) {
+					   this.peers = stats.peers as number;
+				   }
+			   })
         },
 		data() {
 			return {
 				videoContext: null as VideoContext | null,
-				header: {
-				          'User-Agent': 'User-Agent test',
-				          'header': 'header test',
-				          'cookie': 'cookie test'
-				        } as UTSJSONObject,
 				// 属性
 				src:"",
-				oldsrc: "https://s5.bfengbf.com/video/17haoyinlecangkudierji/20240216/index.m3u8",
-
+				originalSrc: "https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/level_0.m3u8",
+			    p2pTraffic: 0,
+				httpTraffic: 0,
+				ratio: "0",
+				uploaded: 0,
+				peers: 0,
+				connected: false,
+				version: "",
 			}
 		},
 		onLoad() {
@@ -48,13 +76,12 @@
 		},
 		methods: {
 			startPlay(){
-				this.src=getP2pUrl(this.oldsrc);
+				const headers = new Map<string, string>();
+				headers.set('a' ,'b');
+				setHttpHeadersForHls(headers)
+				this.src=getP2pUrl(this.originalSrc);
 				console.log(this.src);
 				this.videoContext?.play();
-			},
-			isConnected(){
-				//开始播放了才为true
-				console.log(p2pIsConnected());
 			},
 			mystopP2p(){
 				stopP2p();
@@ -77,6 +104,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		margin-bottom: 20;
 	}
 
 	.logo {
@@ -89,5 +117,11 @@
 	.title {
 		font-size: 36rpx;
 		color: #8f8f94;
+	}
+	
+	.text-item {
+	  flex: 1; /* 使文本项均匀分布 */
+	  text-align: center; /* 文本居中 */
+	  margin: 20;
 	}
 </style>
