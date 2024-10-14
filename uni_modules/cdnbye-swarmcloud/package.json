@@ -1,8 +1,8 @@
 {
   "id": "cdnbye-swarmcloud",
   "displayName": "P2P流媒体加速引擎 播放器P2P传输插件 swarmcloud",
-  "version": "1.0.7",
-  "description": "播放器P2P传输插件,使用此插件后，任何播放器播放HLS(m3u8)点播直播，播放人数越多，播放越流畅，消耗的CDN流量越少，可为你节省60%CDN流量费",
+  "version": "1.0.9",
+  "description": "播放器P2P传输插件,使用此插件后，任何播放器播放HLS(m3u8)点播直播，播放人数越多，播放越流畅，消耗的CDN流量越少，可为你节省60%以上CDN流量费",
   "keywords": [
     "P2P播放器",
     "P2P",
@@ -30,7 +30,7 @@
     "declaration": {
       "ads": "无",
       "data": "无",
-      "permissions": "<uses-permission android:name=\"android.permission.INTERNET\" />\n<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\" />\n<uses-permission android:name=\"android.permission.READ_EXTERNAL_STORAGE\" />\n<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\" />"
+      "permissions": "<uses-permission android:name=\"android.permission.INTERNET\" />\n<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\" />\n<uses-permission android:name=\"android.permission.READ_EXTERNAL_STORAGE\" />\n<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\" />\n<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\" />"
     },
     "npmurl": ""
   },
@@ -50,7 +50,7 @@
         },
         "App": {
           "app-android": {
-            "minVersion": "19"
+            "minVersion": "21"
         },
           "app-ios": {
             "minVersion": "13"

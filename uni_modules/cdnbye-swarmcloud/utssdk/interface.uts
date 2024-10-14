@@ -20,11 +20,9 @@ export type ConfigOptions = {
   prefetchOnly?:boolean,// HLS模式下只采用预加载的方式进行P2P下载 默认false
   downloadOnly?:boolean,// 默认false
   insertTimeOffsetTag?:number,// 仅在直播模式生效，在m3u8文件中插入 "#EXT-X-START:TIME-OFFSET=[timeOffset]"，强制播放器从某个位置开始加载，其中 [timeOffset] 是在播放列表的偏移量，如果为负则从播放列表结尾往前偏移（单位：秒） 安卓有 ios没有
-  mediaFileSeparator?:string,// 媒体文件后缀分隔符 默认“.”
   tag?:string,// 自定义标签
   signalConfig?:string,// 自定义信令地址
   announce?:string,// 自定义tracker地址
-  hlsMediaFiles?:Array<string>,// 支持的HLS媒体文件后缀
   dashMediaFiles?:Array<string>,// 支持的DASH媒体文件后缀 安卓有 ios没有
 }
 

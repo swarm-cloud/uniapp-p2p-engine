@@ -96,10 +96,6 @@ export  function initP2p (token:string,configOptions:ConfigOptions|null=null):vo
 		
 			configBuilder=configBuilder.insertTimeOffsetTag((configOptions.insertTimeOffsetTag as number).toDouble());
 		}
-		if(configOptions.mediaFileSeparator!=null){
-		
-			configBuilder=configBuilder.mediaFileSeparator(configOptions.mediaFileSeparator as string);
-		}
 		if(configOptions.announce!=null){
 		
 			configBuilder=configBuilder.announce(configOptions.announce as string);
@@ -107,10 +103,6 @@ export  function initP2p (token:string,configOptions:ConfigOptions|null=null):vo
 		if(configOptions.signalConfig!=null){
 		
 			configBuilder=configBuilder.signalConfig(configOptions.signalConfig as string, null);
-		}
-		if(configOptions.hlsMediaFiles!=null){
-		
-			configBuilder=configBuilder.hlsMediaFiles(configOptions.hlsMediaFiles as Array<string>);
 		}
 		if(configOptions.dashMediaFiles!=null){
 		
@@ -132,7 +124,7 @@ export  function initP2p (token:string,configOptions:ConfigOptions|null=null):vo
 //如果媒体文件是由多个服务器生成的，为避免冲突，请调用此函数：
 export function setHlsSegmentIdGenerator():void{
 	
-	P2pEngine.getInstance()?.setHlsSegmentIdGenerator(new StrictHlsSegmentIdGenerator());
+	P2pEngine.instance?.setHlsSegmentIdGenerator(new StrictHlsSegmentIdGenerator());
 	
 }
 
@@ -146,21 +138,21 @@ export function  getP2pUrl(url : string,videoId:string|null=null,mimeType:string
 		if(mimeType!=null){
 			switch(mimeType){
 				case 'm3u8':
-					parseUrl= P2pEngine.getInstance()!.parseStreamUrl(url,videoId,MimeType.APPLICATION_M3U8);
+					parseUrl= P2pEngine.instance!.parseStreamUrl(url,videoId,MimeType.APPLICATION_M3U8);
 					break;
 				case 'mpd':
-					parseUrl= P2pEngine.getInstance()!.parseStreamUrl(url,videoId,MimeType.APPLICATION_MPD);
+					parseUrl= P2pEngine.instance!.parseStreamUrl(url,videoId,MimeType.APPLICATION_MPD);
 					break;
 				default:
-					parseUrl= P2pEngine.getInstance()!.parseStreamUrl(url,videoId);
+					parseUrl= P2pEngine.instance!.parseStreamUrl(url,videoId);
 			}
 			
 		}else{
-			parseUrl= P2pEngine.getInstance()!.parseStreamUrl(url,videoId);
+			parseUrl= P2pEngine.instance!.parseStreamUrl(url,videoId);
 		}
 		
 	}else{
-		parseUrl=P2pEngine.getInstance()!.parseStreamUrl(url);
+		parseUrl=P2pEngine.instance!.parseStreamUrl(url);
 		
 	}
     return  parseUrl;
@@ -171,54 +163,54 @@ export function getP2pEngineVersion():string{
 }
 //是否已与CDNBye后台建立连接。
 export function p2pIsConnected():boolean{
-	return P2pEngine.getInstance()!.isConnected;
+	return P2pEngine.instance!.isConnected;
 }
 
 //立即停止P2P加速并释放资源，一般只需要在退出APP的时候调用即可。SDK采用"懒释放"的策略，只有在重启p2p的时候才释放资源。对于性能较差的设备起播耗时可能比较明显，建议在视频播放之前提前调用 engine.stopP2p() 。
 export function stopP2p():void{
-	 P2pEngine.getInstance()!.stopP2p();
+	 P2pEngine.instance!.stopP2p();
 }
 
 export function notifyPlaybackStalled():void{
-	 P2pEngine.getInstance()!.notifyPlaybackStalled();
+	 P2pEngine.instance!.notifyPlaybackStalled();
 }
 
 //重启P2P加速服务，一般不需要调用。
 export function restartP2p():boolean{
-	return P2pEngine.getInstance()!.restartP2p(null);
+	return P2pEngine.instance!.restartP2p(null);
 }
 
 //获取对等连接的id。
 export function peerId():string{
-	return P2pEngine.getInstance()!.peerId;
+	return P2pEngine.instance!.peerId;
 }
 
 
 //动态设置请求ts和m3u8时的HTTP请求头。
 export function setHttpHeadersForHls(headers: Map<string, string>):void{
-	 P2pEngine.getInstance()!.setHttpHeadersForHls(headers);
+	 P2pEngine.instance!.setHttpHeadersForHls(headers);
 }
 
 
 //动态设置请求Dash文件时的HTTP请求头。
 export function setHttpHeadersForDash(headers: Map<string, string>):void{
-	 P2pEngine.getInstance()!.setHttpHeadersForDash(headers);
+	 P2pEngine.instance!.setHttpHeadersForDash(headers);
 }
 
 //运行时动态关闭P2P，在播放下一个媒体文件时才生效。
 export function disableP2p():void{
-	 P2pEngine.getInstance()!.disableP2p();
+	 P2pEngine.instance!.disableP2p();
 }
 
 
 //运行时动态开启P2P，在播放下一个媒体文件时才生效。
 export function enableP2p():void{
-	 P2pEngine.getInstance()!.enableP2p();
+	 P2pEngine.instance!.enableP2p();
 }
 
 //停止P2P并关闭代理服务器。
 export function shutdownP2p():void{
-	 P2pEngine.getInstance()!.shutdown();
+	 P2pEngine.instance!.shutdown();
 }
 
 export function onP2pStats(callback: onStatsCallback):void{
@@ -240,7 +232,7 @@ export function onP2pStats(callback: onStatsCallback):void{
 				p2pUploaded: value as number,
 			} as StatsObject)
 		}
-		override onPeers(peers: MutableList<string>) {
+		override onPeers(peers: List<string>) {
 			callback({
 				peers: peers.size,
 			} as StatsObject)
@@ -251,7 +243,7 @@ export function onP2pStats(callback: onStatsCallback):void{
 			} as StatsObject)
 		}
 	}
-	P2pEngine.getInstance()?.addP2pStatisticsListener(new MyP2pStatisticsListener())
+	P2pEngine.instance?.addP2pStatisticsListener(new MyP2pStatisticsListener())
 }
 
 

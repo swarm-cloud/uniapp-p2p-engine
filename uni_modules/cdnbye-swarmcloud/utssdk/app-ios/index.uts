@@ -13,9 +13,9 @@ export function initP2p (token:string,configOptions:ConfigOptions|null=null):voi
 	
 	if(configOptions!=null){
 		let config = P2pConfig(trackerZone=TrackerZone.Europe);
-			if(configOptions!.p2pEnabled!=null){
-				config.p2pEnabled=configOptions!.p2pEnabled as boolean;
-			}
+			// if(configOptions!.p2pEnabled!=null){
+			// 	config.p2pEnabled=configOptions!.p2pEnabled as boolean;
+			// }
 			if(configOptions!.useStrictHlsSegmentId!=null){
 				config.useStrictHlsSegmentId=configOptions!.useStrictHlsSegmentId as boolean;
 			}
@@ -40,9 +40,9 @@ export function initP2p (token:string,configOptions:ConfigOptions|null=null):voi
 			if(configOptions!.maxPeerConnections!=null){
 				config.maxPeerConnections=(configOptions!.maxPeerConnections as number).toInt();
 			}
-			if(configOptions!.useHttpRange!=null){
-				config.useHttpRange=configOptions!.useHttpRange as boolean;
-			}
+			// if(configOptions!.useHttpRange!=null){
+			// 	config.useHttpRange=configOptions!.useHttpRange as boolean;
+			// }
 			if(configOptions!.httpHeadersForHls!=null){
 				config.httpHeadersHls=configOptions!.httpHeadersForHls;
 			}
@@ -61,25 +61,17 @@ export function initP2p (token:string,configOptions:ConfigOptions|null=null):voi
 			if(configOptions!.insertTimeOffsetTag!=null){
 				// config.playlistTimeOffset=(configOptions!.insertTimeOffsetTag as number).toDouble();
 			}
-			if(configOptions!.mediaFileSeparator!=null){
-				config.mediaFileSeparator=configOptions!.mediaFileSeparator as string;
-			}
 			if(configOptions!.announce!=null){
 				config.announce=configOptions!.announce as string;
 			}
 			if(configOptions!.signalConfig!=null){
 				config.signalConfig=SignalConfig(mainAddr=configOptions!.signalConfig as string)
 			}
-			if(configOptions!.hlsMediaFiles!=null){
-				config.hlsMediaFiles=configOptions!.hlsMediaFiles as Array<string>
-			}
 			if(configOptions!.tag!=null){
 				config.customLabel=configOptions!.tag as string;
 			} else {
 				config.customLabel="uniapp";
 			}
-	
-		
 		P2pEngine.setup(token=token, config=config)
 	}else{
 		P2pEngine.setup(token=token, config=P2pConfig(trackerZone=TrackerZone.Europe)) 

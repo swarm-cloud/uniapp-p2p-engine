@@ -26,7 +26,7 @@
 
 <script>
 
-	import { ConfigOptions,initP2p,getP2pUrl,getP2pEngineVersion,p2pIsConnected,stopP2p, onP2pStats, StatsObject, setHttpHeadersForHls } from "@/uni_modules/cdnbye-swarmcloud";
+	import { ConfigOptions, initP2p, getP2pUrl, getP2pEngineVersion , stopP2p, onP2pStats, StatsObject } from "@/uni_modules/cdnbye-swarmcloud";
 	export default {
 		onReady() {
 			//注意uniappx 的video组建ios没有实现 请自行更换其他播放器
@@ -40,15 +40,19 @@
 			   onP2pStats((stats: StatsObject) => {
 				   if (stats.serverConnected != null) {
 					   this.connected = stats.serverConnected as boolean;
-				   } else if (stats.httpDownloaded != null) {
+				   }
+				   if (stats.httpDownloaded != null) {
 					   this.httpTraffic += stats.httpDownloaded as number;
 					   this.ratio = (this.p2pTraffic/(this.httpTraffic + this.p2pTraffic)*100).toFixed(0);
-				   } else if (stats.p2pDownloaded != null) {
+				   } 
+				   if (stats.p2pDownloaded != null) {
 					   this.p2pTraffic += stats.p2pDownloaded as number;
 					   this.ratio = (this.p2pTraffic/(this.httpTraffic + this.p2pTraffic)*100).toFixed(0);
-				   } else if (stats.p2pUploaded != null) {
+				   }
+				   if (stats.p2pUploaded != null) {
 					   this.uploaded += stats.p2pUploaded as number;
-				   } else if (stats.peers != null) {
+				   }
+				   if (stats.peers != null) {
 					   this.peers = stats.peers as number;
 				   }
 			   })
@@ -76,9 +80,6 @@
 		},
 		methods: {
 			startPlay(){
-				const headers = new Map<string, string>();
-				headers.set('a' ,'b');
-				setHttpHeadersForHls(headers)
 				this.src=getP2pUrl(this.originalSrc);
 				console.log(this.src);
 				this.videoContext?.play();

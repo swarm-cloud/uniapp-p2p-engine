@@ -1,9 +1,3 @@
 {
-	"deploymentTarget": "13",
-	"dependencies-pods": [
-		{
-			"name": "SwarmCloudKit",
-			"version": "3.2.5"
-		}
-	]
+	"deploymentTarget": "13"
 }

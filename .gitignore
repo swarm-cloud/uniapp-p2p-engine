@@ -2,3 +2,4 @@
 .DS_Store
 unpackage
 uni_modules/cdnbye-swarmcloud/utssdk/app-android/libs/*
+.hbuilderx
