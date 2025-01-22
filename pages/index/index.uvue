@@ -26,15 +26,14 @@
 
 <script>
 
-	import { ConfigOptions, initP2p, getP2pUrl, getP2pEngineVersion , stopP2p, onP2pStats, StatsObject } from "@/uni_modules/cdnbye-swarmcloud";
+	import { ConfigOptions, StatsObject, initP2p, getP2pUrl, getP2pEngineVersion , stopP2p, onP2pStats } from "@/uni_modules/cdnbye-swarmcloud/";
 	export default {
 		onReady() {
-			//注意uniappx 的video组建ios没有实现 请自行更换其他播放器
             this.videoContext = uni.createVideoContext('video', this);
             let options = {
-                 trackerZone:0,
+				 trackerZone:0,
 				 insertTimeOffsetTag: 0,
-               } as ConfigOptions;
+			   } as ConfigOptions;
                initP2p("ZMuO5qHZg",options);        // 此处换成在控制台获取的token
 			   this.version = getP2pEngineVersion();
 			   onP2pStats((stats: StatsObject) => {

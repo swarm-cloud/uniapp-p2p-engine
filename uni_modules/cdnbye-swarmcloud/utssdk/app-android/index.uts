@@ -8,8 +8,6 @@ import MimeType from 'com.p2pengine.sdk.MimeType';
 import TimeUnit from 'java.util.concurrent.TimeUnit';
 import { ConfigOptions, onStatsCallback, StatsObject } from '../interface.uts';
 
-export { ConfigOptions, StatsObject }
-
 /**
  * UTSAndroid 为平台内置对象，不需要 import 可直接调用其API，[详见](https://uniapp.dcloud.net.cn/uts/utsandroid.html#utsandroid)
  */
@@ -22,8 +20,8 @@ export  function initP2p (token:string,configOptions:ConfigOptions|null=null):vo
 	
 	let configBuilder = P2pConfig.Builder();
 	if(configOptions!=null){
-		if(configOptions.p2pEnabled!=null){
-			configBuilder=configBuilder.p2pEnabled(configOptions.p2pEnabled as boolean);
+		if(configOptions.p2pDisabled!=null){
+			configBuilder=configBuilder.p2pEnabled(!(configOptions.p2pDisabled as boolean));
 		}
 		if(configOptions.useStrictHlsSegmentId!=null){
 			configBuilder=configBuilder.useStrictHlsSegmentId(configOptions.useStrictHlsSegmentId as boolean);
@@ -60,6 +58,10 @@ export  function initP2p (token:string,configOptions:ConfigOptions|null=null):vo
 		
 			configBuilder=configBuilder.memoryCacheCountLimit((configOptions.memoryCacheCountLimit as number).toInt());
 		}
+		if(configOptions.startFromSegmentOffset!=null){
+		
+			configBuilder=configBuilder.startFromSegmentOffset((configOptions.startFromSegmentOffset as number).toInt());
+		}
 		if(configOptions.maxPeerConnections!=null){
 		
 			configBuilder=configBuilder.maxPeerConnections((configOptions.maxPeerConnections as number).toInt());
@@ -75,10 +77,6 @@ export  function initP2p (token:string,configOptions:ConfigOptions|null=null):vo
 		if(configOptions.httpHeadersForDash!=null){
 		
 			configBuilder=configBuilder.httpHeadersForDash(configOptions.httpHeadersForDash as Map<string,string>);
-		}
-		if(configOptions.httpLoadTime!=null){
-		
-			configBuilder=configBuilder.httpLoadTime(((configOptions.httpLoadTime as number)*1000).toLong());
 		}
 		if(configOptions.sharePlaylist!=null){
 		

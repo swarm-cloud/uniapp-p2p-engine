@@ -6,16 +6,14 @@ import { ConfigOptions, onStatsCallback, StatsObject } from '../interface.uts';
 let logArr = [LogLevel.VERBOSE,LogLevel.DEBUG,LogLevel.INFO,LogLevel.WARN,LogLevel.ERROR];
 let zoneArr = [TrackerZone.Europe,TrackerZone.HongKong,TrackerZone.USA,TrackerZone.China];
 
-export { ConfigOptions, StatsObject }
-
 //初始化 
 export function initP2p (token:string,configOptions:ConfigOptions|null=null):void {
 	
 	if(configOptions!=null){
 		let config = P2pConfig(trackerZone=TrackerZone.Europe);
-			// if(configOptions!.p2pEnabled!=null){
-			// 	config.p2pEnabled=configOptions!.p2pEnabled as boolean;
-			// }
+			if(configOptions!.p2pDisabled!=null){
+				config.p2pEnabled=!(configOptions!.p2pDisabled as boolean);
+			}
 			if(configOptions!.useStrictHlsSegmentId!=null){
 				config.useStrictHlsSegmentId=configOptions!.useStrictHlsSegmentId as boolean;
 			}
@@ -37,6 +35,9 @@ export function initP2p (token:string,configOptions:ConfigOptions|null=null):voi
 			if(configOptions!.memoryCacheCountLimit!=null){
 				config.memoryCacheCountLimit=(configOptions!.memoryCacheCountLimit as number).toUInt();
 			}
+			if(configOptions!.startFromSegmentOffset!=null){
+				config.startFromSegmentOffset=(configOptions!.startFromSegmentOffset as number).toUInt();
+			}
 			if(configOptions!.maxPeerConnections!=null){
 				config.maxPeerConnections=(configOptions!.maxPeerConnections as number).toInt();
 			}
@@ -46,9 +47,9 @@ export function initP2p (token:string,configOptions:ConfigOptions|null=null):voi
 			if(configOptions!.httpHeadersForHls!=null){
 				config.httpHeadersHls=configOptions!.httpHeadersForHls;
 			}
-			if(configOptions!.httpLoadTime!=null){
-				config.httpLoadTime=(configOptions!.httpLoadTime as number).toDouble();
-			}
+			// if(configOptions!.httpLoadTime!=null){
+			// 	config.httpLoadTime=(configOptions!.httpLoadTime as number).toDouble();
+			// }
 			if(configOptions!.sharePlaylist!=null){
 				config.sharePlaylist=configOptions!.sharePlaylist as boolean;
 			}
