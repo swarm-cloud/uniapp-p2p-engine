@@ -18,7 +18,7 @@
 
 
 ## 获取Token
-参考[如何获取token](https://www.cdnbye.com/cn/bindings.html#%E7%BB%91%E5%AE%9A-app-id-%E5%B9%B6%E8%8E%B7%E5%8F%96token)
+参考[如何获取token](https://www.cdnbye.com/bindings.html#%E7%BB%91%E5%AE%9A-app-id-%E5%B9%B6%E8%8E%B7%E5%8F%96token)
 
 ## 控制台
 登录 https://dash.cdnbye.com 并绑定 APPId, 即可查看P2P效果、在线人数等信息。
