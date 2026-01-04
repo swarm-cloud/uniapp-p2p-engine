@@ -1,4 +1,4 @@
-<h1 align="center"><a href="" target="_blank" rel="noopener noreferrer"><img width="250" src="https://www.cdnbye.com/img/logo.png" alt="logo"></a></h1>
+<h1 align="center"><a href="" target="_blank" rel="noopener noreferrer"><img width="250" src="https://www.swarmcloud.net/img/logo.png" alt="logo"></a></h1>
 <h4 align="center">UniappX 视频/直播APP省流量&加速引擎</h4>
 
 
@@ -14,7 +14,7 @@
 - 通过有效的调度策略来保证用户的播放体验以及p2p分享率
 
 ## 使用方法
-参考[使用文档](https://www.cdnbye.com/cn/uniapp/usage.html)
+参考[使用文档](https://www.cdnbye.com/uniapp/usage.html)
 
 
 ## 获取Token
